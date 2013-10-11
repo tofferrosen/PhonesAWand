@@ -4,6 +4,6 @@
     <string name="app_name">PhonesAWand</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="perform_magic">Perform Magic!</string>
+    <string name="perform_magic">Cast Spell</string>
 
 </resources>
