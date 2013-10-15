@@ -1,16 +1,24 @@
 package rit.se356.phonesawand;
 
 
+import java.util.ArrayList;
+
+import android.R.string;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.speech.RecognizerIntent;
 
 public class MainActivity extends Activity {
 
+	protected static final int RESULT_SPEECH = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +51,35 @@ public class MainActivity extends Activity {
 	 */
 	public void startRecordingMagic() {
 		Log.d("Pressed", "Start Recording Magic!");
+		startRecordingVoice();
+	}
+
+	public void startRecordingVoice() {
+		Intent intent = new Intent(
+				RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+		
+		try {
+			startActivityForResult(intent, RESULT_SPEECH);
+		} catch (ActivityNotFoundException a) {
+			// device doesn't support speech to text
+		}
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch (requestCode) {
+		case RESULT_SPEECH: {
+			if ( resultCode == RESULT_OK && null != data ) {
+				ArrayList<String> magicWords = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+				Log.d(" VOICE SIZE: ", "" + magicWords.size());
+				Log.d(" VOICE: ", magicWords.get(0));
+			}
+			break;
+		}
+		}
 	}
 	
 	/**
