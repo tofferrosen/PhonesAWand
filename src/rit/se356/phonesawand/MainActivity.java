@@ -14,10 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 
 public class MainActivity extends Activity {
 
 	protected static final int RESULT_SPEECH = 1;
+	private SpeechRecognizer speech;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,30 +57,24 @@ public class MainActivity extends Activity {
 	}
 
 	public void startRecordingVoice() {
+		
+		SpeechListener listener = new SpeechListener();
+		
+		speech = SpeechRecognizer.createSpeechRecognizer(this);
+		speech.setRecognitionListener(listener);
+	
+		
 		Intent intent = new Intent(
 				RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+		intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
+		        this.getPackageName());
 		
 		try {
-			startActivityForResult(intent, RESULT_SPEECH);
+			speech.startListening(intent);
 		} catch (ActivityNotFoundException a) {
 			// device doesn't support speech to text
-		}
-	}
-	
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		switch (requestCode) {
-		case RESULT_SPEECH: {
-			if ( resultCode == RESULT_OK && null != data ) {
-				ArrayList<String> magicWords = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-				Log.d(" VOICE SIZE: ", "" + magicWords.size());
-				Log.d(" VOICE: ", magicWords.get(0));
-			}
-			break;
-		}
+			Log.d("Error:", "listening to voice failed");
 		}
 	}
 	
@@ -89,6 +85,9 @@ public class MainActivity extends Activity {
 	 */
 	public void stopRecordingMagic() {
 		Log.d("Released", "Stop Recording Magic!");
+		
+		// stop listening to voice commands
+		speech.stopListening();
 	}
 
 }
