@@ -7,7 +7,11 @@ import android.R.string;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -20,6 +24,8 @@ public class MainActivity extends Activity {
 
 	protected static final int RESULT_SPEECH = 1;
 	private SpeechRecognizer speech;
+	private SensorManager mSensorManager;
+	private Sensor mSensor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class MainActivity extends Activity {
 	public void startRecordingMagic() {
 		Log.d("Pressed", "Start Recording Magic!");
 		startRecordingVoice();
+		startRecordingMotion();
 	}
 
 	public void startRecordingVoice() {
@@ -76,6 +83,18 @@ public class MainActivity extends Activity {
 			// device doesn't support speech to text
 			Log.d("Error:", "listening to voice failed");
 		}
+	}
+	
+	public void startRecordingMotion() {
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+		
+	}
+	
+	public void onSensorChanged(SensorEvent event){
+		Log.d("x-acceleration: ", Float.toString(event.values[0]));
+		Log.d("y-acceleration: ", Float.toString(event.values[1]));
+		
 	}
 	
 	/**
