@@ -11,3 +11,5 @@ files to ignore
 *.jar
 *.war
 *.ear
+
+bin/
