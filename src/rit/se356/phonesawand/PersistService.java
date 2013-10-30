@@ -1,7 +1,10 @@
 package rit.se356.phonesawand;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 
@@ -66,5 +69,21 @@ public class PersistService {
 			internalSpell.motion = params[1];
 			
 			return internalSpell;
+		}
+		
+		/**
+		 * Gets all the spells from the directory.
+		 * 
+		 * @return The list of spells
+		 */
+		List<Spell> getSpells() {
+			File[] filesList = appContext.getFilesDir().listFiles();
+			List<Spell> spellList = new ArrayList<Spell>();
+			
+			for (File f : filesList) {
+				spellList.add(loadSpell(f.getName()));
+			}
+			
+			return new ArrayList<Spell>();
 		}
 }
