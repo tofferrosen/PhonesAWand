@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -7,10 +7,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
+    
+    <Button android:id="@+id/goto_grimoire"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/grimoire" />
 
      <Button android:id="@+id/perform_magic"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/perform_magic" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/perform_magic"
+		android:layout_alignParentBottom="true"
+    	android:layout_centerInParent="true"
+    	android:background="@drawable/roundbackground" />
 
-</LinearLayout>
+
+</RelativeLayout>
