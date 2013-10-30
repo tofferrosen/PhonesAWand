@@ -1,7 +1,10 @@
 package rit.se356.phonesawand;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 
@@ -27,7 +30,7 @@ public class PersistService {
 			input += toSave.motion;
 			
 			try {
-				fos = appContext.openFileOutput(toSave.spellName, Context.MODE_PRIVATE);
+				fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
 				fos.write(input.getBytes());
 				fos.close();
 			} catch (Exception e) {
@@ -46,7 +49,7 @@ public class PersistService {
 			StringBuffer fileContent = new StringBuffer("");
 			FileInputStream fis;
 			try {
-			    fis = appContext.openFileInput( spellname );
+			    fis = appContext.openFileInput( "spells\\" + spellname );
 			    try {
 			        while( (ch = fis.read()) != -1)
 			            fileContent.append((char)ch);
@@ -66,5 +69,21 @@ public class PersistService {
 			internalSpell.motion = params[1];
 			
 			return internalSpell;
+		}
+		
+		/**
+		 * Gets all the spells from the directory.
+		 * 
+		 * @return The list of spells
+		 */
+		List<Spell> getSpells() {
+			File spellsDir = new File(appContext.getFilesDir().getPath() + "spells\\");
+			List<Spell> spellList = new ArrayList<Spell>();
+			
+			for (File f : spellsDir.listFiles()) {
+				spellList.add(loadSpell(f.getName()));
+			}
+			
+			return new ArrayList<Spell>();
 		}
 }
