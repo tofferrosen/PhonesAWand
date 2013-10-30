@@ -30,7 +30,7 @@ public class PersistService {
 			input += toSave.motion;
 			
 			try {
-				fos = appContext.openFileOutput(toSave.spellName, Context.MODE_PRIVATE);
+				fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
 				fos.write(input.getBytes());
 				fos.close();
 			} catch (Exception e) {
@@ -49,7 +49,7 @@ public class PersistService {
 			StringBuffer fileContent = new StringBuffer("");
 			FileInputStream fis;
 			try {
-			    fis = appContext.openFileInput( spellname );
+			    fis = appContext.openFileInput( "spells\\" + spellname );
 			    try {
 			        while( (ch = fis.read()) != -1)
 			            fileContent.append((char)ch);
@@ -77,10 +77,10 @@ public class PersistService {
 		 * @return The list of spells
 		 */
 		List<Spell> getSpells() {
-			File[] filesList = appContext.getFilesDir().listFiles();
+			File spellsDir = new File(appContext.getFilesDir().getPath() + "spells\\");
 			List<Spell> spellList = new ArrayList<Spell>();
 			
-			for (File f : filesList) {
+			for (File f : spellsDir.listFiles()) {
 				spellList.add(loadSpell(f.getName()));
 			}
 			
