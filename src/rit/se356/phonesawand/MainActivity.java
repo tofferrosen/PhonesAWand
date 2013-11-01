@@ -32,6 +32,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		// Create default spell
+		Spell defaultSpell = new Spell();
+		defaultSpell.spellName = "Default";
+		defaultSpell.voice = "fireball";
+		PersistService pervService = new PersistService(getBaseContext());
+		pervService.saveSpell(defaultSpell);
+		
 		final Button doMagic = (Button) findViewById(R.id.perform_magic);
 		doMagic.setOnTouchListener(new View.OnTouchListener() {
 			

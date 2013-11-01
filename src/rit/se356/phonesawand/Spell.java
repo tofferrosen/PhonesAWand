@@ -96,8 +96,5 @@ public class Spell implements Cloneable{
 
 	public void setSpellPower(int spellPower) {
 		this.spellPower = spellPower;
-	}
-	
-	
-	
+	}	
 }
