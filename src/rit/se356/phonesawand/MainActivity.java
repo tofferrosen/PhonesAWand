@@ -108,5 +108,14 @@ public class MainActivity extends Activity {
 		// stop listening to voice commands
 		speech.stopListening();
 	}
+	
+	/**
+	 * Opens the Grimoire spellbook 
+	 * onClick handler for the Grimoire button
+	 */
+	public void gotoGrimoire(View view){
+		Intent myIntent = new Intent(MainActivity.this, GrimoireActivity.class);
+		MainActivity.this.startActivity(myIntent);
+	}
 
 }

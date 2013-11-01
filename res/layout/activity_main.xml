@@ -11,7 +11,8 @@
     <Button android:id="@+id/goto_grimoire"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/grimoire" />
+        android:text="@string/grimoire" 
+        android:onClick="gotoGrimoire"/>
 
      <Button android:id="@+id/perform_magic"
         android:layout_width="wrap_content"
