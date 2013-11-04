@@ -33,11 +33,13 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		// Create default spell
+		Log.d("Notification", "App Directory: " + getBaseContext().getFilesDir().getPath());
 		Spell defaultSpell = new Spell();
 		defaultSpell.spellName = "Default";
 		defaultSpell.voice = "fireball";
 		PersistService pervService = new PersistService(getBaseContext());
 		pervService.saveSpell(defaultSpell);
+		Log.d("Notification", "# of spells: " + pervService.getSpells().size());
 		
 		final Button doMagic = (Button) findViewById(R.id.perform_magic);
 		doMagic.setOnTouchListener(new View.OnTouchListener() {
