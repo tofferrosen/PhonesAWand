@@ -35,7 +35,7 @@ public class PersistService {
 				Log.d("Debug", "Save Spell folder: " + spellDir.getPath());
 				File spellFile = new File(spellDir, toSave.spellName);
 				fos = new FileOutputStream(spellFile);
-				Log.d("Notification", "File created: " + toSave.spellName);
+				Log.d("Debug", "File created: " + spellFile.getPath());
 				fos.write(input.getBytes());
 				fos.close();
 			} catch (Exception e) {
@@ -94,6 +94,6 @@ public class PersistService {
 				spellList.add(loadSpell(f.getName()));
 			}
 			
-			return new ArrayList<Spell>();
+			return spellList;
 		}
 }
