@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:label="@string/app_name" android:name="rit.se356.phonesawand.GrimoireActivity"/>
+        <activity android:label="@string/app_name" android:name="rit.se356.phonesawand.SpeechListener"/>
     </application>
 
 </manifest>
