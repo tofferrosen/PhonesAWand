@@ -117,8 +117,8 @@ public class MainActivity extends Activity {
 	 * onClick handler for the Grimoire button
 	 */
 	public void gotoGrimoire(View view){
-		Intent myIntent = new Intent(MainActivity.this, GrimoireActivity.class);
-		MainActivity.this.startActivity(myIntent);
+		Intent myIntent = new Intent(this, GrimoireActivity.class);
+		startActivity(myIntent);
 	}
 
 }

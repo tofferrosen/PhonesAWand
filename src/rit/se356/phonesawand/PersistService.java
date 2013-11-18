@@ -74,6 +74,7 @@ public class PersistService {
 			Spell internalSpell = new Spell();
 			
 			// Needs to be updated when spell changes
+			internalSpell.spellName = spellName;
 			internalSpell.voice = params[0];
 			internalSpell.motion = params[1];
 			
