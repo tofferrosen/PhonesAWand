@@ -1,5 +1,7 @@
 package rit.se356.phonesawand;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author Nicholas Weller
@@ -13,7 +15,7 @@ package rit.se356.phonesawand;
 public class Spell implements Cloneable{	
 	protected String spellName;
 	protected String voice;
-	protected String motion;
+	protected ArrayList<float[]> motion;
 	protected int damage;
 	protected int speed;
 	protected int DoT;
@@ -26,7 +28,7 @@ public class Spell implements Cloneable{
 	//of other components
 	protected int spellPower;
 	
-	public Spell(String name, String v, String m, int d, int sp,
+	public Spell(String name, String v, ArrayList<float[]> m, int d, int sp,
 			int dot, String e, String t, String s){
 		
 		spellName = name;
@@ -59,7 +61,7 @@ public class Spell implements Cloneable{
 	}
 
 
-	public void setMotion(String motion) {
+	public void setMotion(ArrayList<float[]> motion) {
 		this.motion = motion;
 	}
 
@@ -96,6 +98,23 @@ public class Spell implements Cloneable{
 
 	public void setSpellPower(int spellPower) {
 		this.spellPower = spellPower;
+	}
+	
+	public String toStringMotion(){
+		String motionString = "";
+		for(float[] s: motion){
+			int count = 0;
+			for(Float st: s){
+				motionString += st;
+				count++;
+				if(count % 3 == 0){
+					motionString += "/";
+				}else{
+					motionString += ",";
+				}
+			}
+		}
+		return motionString;
 	}
 	
 }
