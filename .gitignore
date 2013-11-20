@@ -13,3 +13,5 @@ files to ignore
 *.ear
 
 bin/
+
+.settings/org.eclipse.jdt.core.prefs

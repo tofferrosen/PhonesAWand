@@ -1,11 +1,15 @@
 package rit.se356.phonesawand;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -22,12 +26,14 @@ import android.util.Log;
  * @author toffer
  *
  */
-public class SpeechListener implements RecognitionListener {
+public class SpeechListener implements RecognitionListener, SensorEventListener{
 	
 	private SpeechRecognizer speech = null;		/* Android Speech Recognizer */
 	private Context context = null;				/* Context of calling activity */
 	MainActivity mainActivity = null;			/* Main Activity to call voiceFinished method when 
 													recognitionlistener finishes */
+	private Timer timer;
+	private MotionRecordTask motionTask;
 	
 	public SpeechListener(Context c, MainActivity mainActivity){
 		this.context = c;
@@ -39,6 +45,10 @@ public class SpeechListener implements RecognitionListener {
 	 * DOES NOT STOP VOICE until stopRecordingVoice is called
 	 */
 	public void startRecordingVoice(){
+		timer = new Timer();
+		motionTask = new MotionRecordTask();
+		//schedule motion task to record motion every 100 milliseconds
+		timer.schedule(motionTask,0, 100);
 		
 		speech = SpeechRecognizer.createSpeechRecognizer(context);
 		speech.setRecognitionListener(this);
@@ -64,6 +74,8 @@ public class SpeechListener implements RecognitionListener {
 	 */
 	public void stopRecordingVoice(){
 		speech.stopListening();
+		//stop timer
+		timer.cancel();
 	}
 	
 	/* 
@@ -124,13 +136,25 @@ public class SpeechListener implements RecognitionListener {
 		
 		Log.d("SpeechListener results: ", magicWords.get(0));
 		String voiceResults = magicWords.get(0);
-		mainActivity.voiceFinished(voiceResults);
+		mainActivity.voiceFinished(voiceResults,motionTask.getXyzValues());
 	}
 
 
 	@Override
 	public void onRmsChanged(float arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		motionTask.setXYZ(event.values);
 		
 	}
 
