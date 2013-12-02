@@ -33,7 +33,7 @@ public class PersistService {
 			input += toSave.DoT + "#";
 			input += toSave.effect + "#";
 			input += toSave.type + "#";
-			input += toSave.school + "#";
+			input += toSave.school;
 			
 			try {
 				fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
@@ -73,7 +73,7 @@ public class PersistService {
 			
 			// Needs to be updated when spell changes
 			//internalSpell.voice = params[0];
-			String[] motionChunk = params[1].split("|");
+			String[] motionChunk = params[1].split("/");
 			int mSize = motionChunk.length;
 			ArrayList<float[]> motionList = new ArrayList<float[]>();
 			for(int i = 0; i < mSize; i++){
