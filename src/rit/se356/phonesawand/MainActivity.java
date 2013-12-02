@@ -32,9 +32,11 @@ public class MainActivity extends Activity {
 		
 		// Create default spell
 		Log.d("Notification", "App Directory: " + getBaseContext().getFilesDir().getPath());
-		Spell defaultSpell = new Spell();
-		defaultSpell.spellName = "Default";
-		defaultSpell.voice = "fireball";
+		//Spell defaultSpell = new Spell();
+		ArrayList<float[]> motion = new ArrayList<float[]>();
+		Spell defaultSpell = new Spell("Default", "fireball", motion, 100, 10, 0, "burn", "Fire", "Evocation");
+		//defaultSpell.spellName = "Default";
+		//defaultSpell.voice = "fireball";
 		PersistService pervService = new PersistService(getBaseContext());
 		pervService.saveSpell(defaultSpell);
 		Log.d("Notification", "# of spells: " + pervService.getSpells().size());
