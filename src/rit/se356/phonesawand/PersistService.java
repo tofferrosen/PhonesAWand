@@ -132,6 +132,6 @@ public class PersistService {
 				spellList.add(loadSpell(f.getName()));
 			}
 			
-			return new ArrayList<Spell>();
+			return spellList;
 		}
 }
