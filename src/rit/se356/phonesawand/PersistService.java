@@ -1,5 +1,7 @@
 package rit.se356.phonesawand;
 
+//import Spell.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 public class PersistService {
 
@@ -23,25 +26,49 @@ public class PersistService {
 		 */
 		void saveSpell(Spell toSave) {
 			String input = "";
-			FileOutputStream fos;
+//			ArrayList<Spell> tempList = new ArrayList<Spell>();
+//			boolean isEqual = true;
+//			for(Spell s: tempList){
+//				isEqual = true;
+//				if(s.motion.size() == toSave.motion.size()){
+//					for(int i = 0; i < s.motion.size(); i++){
+//						float[] check1 = s.motion.get(i);
+//						float[] check2 = toSave.motion.get(i);
+//						if(!check1.equals(check2)){
+//							isEqual = false;
+//							break;
+//						}
+//					}
+//				} else{
+//					isEqual = false;
+//				}
+//			}
+//			
+//			if(!isEqual){
+				FileOutputStream fos;
 			
-			// Needs to be updated when spell changes
-			input += toSave.voice + "#";
-			input += toSave.toStringMotion() + "#";
-			input += toSave.damage + "#";
-			input += toSave.speed + "#";
-			input += toSave.DoT + "#";
-			input += toSave.effect + "#";
-			input += toSave.type + "#";
-			input += toSave.school + "#";
+				// Needs to be updated when spell changes
+				input += toSave.voice + "#";
+				input += toSave.toStringMotion() + "#";
+				input += toSave.damage + "#";
+				input += toSave.speed + "#";
+				input += toSave.DoT + "#";
+				input += toSave.effect + "#";
+				input += toSave.type + "#";
+				input += toSave.school;
 			
-			try {
-				fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
-				fos.write(input.getBytes());
-				fos.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				try {
+					File spellDir = appContext.getDir("spells", Context.MODE_PRIVATE);
+					Log.d("Debug", "Save Spell folder: " + spellDir.getPath());
+					File spellFile = new File(spellDir, toSave.spellName);
+					fos = new FileOutputStream(spellFile);
+					Log.d("Notification", "File created: " + toSave.spellName);
+					fos.write(input.getBytes());
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+//			}
 		}
 		
 		/**
@@ -50,18 +77,22 @@ public class PersistService {
 		 * @param spellname - The name of the spell
 		 * @return The spell
 		 */
-		Spell loadSpell(String spellname) {
+		Spell loadSpell(String spellName) {
 			int ch;
 			StringBuffer fileContent = new StringBuffer("");
 			FileInputStream fis;
 			try {
-			    fis = appContext.openFileInput( "spells\\" + spellname );
+				File spellDir = appContext.getDir("spells", Context.MODE_PRIVATE);
+				Log.d("Debug", "Load Spell folder: " + spellDir.getPath());
+				File spellFile = new File(spellDir, spellName);
+				fis = new FileInputStream(spellFile);
 			    try {
 			        while( (ch = fis.read()) != -1)
 			            fileContent.append((char)ch);
 			    } catch (Exception e) {
 			        e.printStackTrace();
 			    }
+			    fis.close();
 			} catch (Exception e) {
 			    e.printStackTrace();
 			}
@@ -73,7 +104,7 @@ public class PersistService {
 			
 			// Needs to be updated when spell changes
 			//internalSpell.voice = params[0];
-			String[] motionChunk = params[1].split("|");
+			String[] motionChunk = params[1].split("/");
 			int mSize = motionChunk.length;
 			ArrayList<float[]> motionList = new ArrayList<float[]>();
 			for(int i = 0; i < mSize; i++){
@@ -88,7 +119,7 @@ public class PersistService {
 				motionList.add(floatArray);
 			}
 			
-			Spell internalSpell = new Spell(spellname, params[0], motionList,
+			Spell internalSpell = new Spell(spellName, params[0], motionList,
 					Integer.parseInt(params[2]), Integer.parseInt(params[3]), 
 					Integer.parseInt(params[4]), params[5], params[6], params[7]);
 			//internalSpell.motion = motionMatrix;
@@ -103,13 +134,14 @@ public class PersistService {
 		 * @return The list of spells
 		 */
 		List<Spell> getSpells() {
-			File spellsDir = new File(appContext.getFilesDir().getPath() + "spells\\");
+			File spellsDir = appContext.getDir("spells", Context.MODE_PRIVATE);
+			Log.d("Debug", "Get Spell folder: " + spellsDir.getPath());
 			List<Spell> spellList = new ArrayList<Spell>();
 			
 			for (File f : spellsDir.listFiles()) {
 				spellList.add(loadSpell(f.getName()));
 			}
 			
-			return new ArrayList<Spell>();
+			return spellList;
 		}
 }
