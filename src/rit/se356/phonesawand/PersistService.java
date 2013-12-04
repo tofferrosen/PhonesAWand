@@ -1,5 +1,7 @@
 package rit.se356.phonesawand;
 
+//import Spell.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,25 +25,45 @@ public class PersistService {
 		 */
 		void saveSpell(Spell toSave) {
 			String input = "";
-			FileOutputStream fos;
+//			ArrayList<Spell> tempList = new ArrayList<Spell>();
+//			boolean isEqual = true;
+//			for(Spell s: tempList){
+//				isEqual = true;
+//				if(s.motion.size() == toSave.motion.size()){
+//					for(int i = 0; i < s.motion.size(); i++){
+//						float[] check1 = s.motion.get(i);
+//						float[] check2 = toSave.motion.get(i);
+//						if(!check1.equals(check2)){
+//							isEqual = false;
+//							break;
+//						}
+//					}
+//				} else{
+//					isEqual = false;
+//				}
+//			}
+//			
+//			if(!isEqual){
+				FileOutputStream fos;
 			
-			// Needs to be updated when spell changes
-			input += toSave.voice + "#";
-			input += toSave.toStringMotion() + "#";
-			input += toSave.damage + "#";
-			input += toSave.speed + "#";
-			input += toSave.DoT + "#";
-			input += toSave.effect + "#";
-			input += toSave.type + "#";
-			input += toSave.school;
+				// Needs to be updated when spell changes
+				input += toSave.voice + "#";
+				input += toSave.toStringMotion() + "#";
+				input += toSave.damage + "#";
+				input += toSave.speed + "#";
+				input += toSave.DoT + "#";
+				input += toSave.effect + "#";
+				input += toSave.type + "#";
+				input += toSave.school;
 			
-			try {
-				fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
-				fos.write(input.getBytes());
-				fos.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				try {
+					fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
+					fos.write(input.getBytes());
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+//			}
 		}
 		
 		/**
