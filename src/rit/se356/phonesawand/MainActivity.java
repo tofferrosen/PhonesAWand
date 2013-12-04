@@ -2,6 +2,7 @@ package rit.se356.phonesawand;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.R.string;
 import android.os.Bundle;
@@ -23,12 +24,16 @@ public class MainActivity extends Activity {
 	protected static final int RESULT_SPEECH = 1;
 	private SpeechListener listener = null;
 	private SensorManager mSensorManager;
-	private Sensor mSensor;
+	private Sensor mAccelerometer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Get an instance of the SensorManager
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		
 		// Create default spell
 		Log.d("Notification", "App Directory: " + getBaseContext().getFilesDir().getPath());
@@ -65,8 +70,9 @@ public class MainActivity extends Activity {
 	 * This method is called by the SpeechListener when done listening for voice
 	 * @param voiceResult			string of the voice results captured by SpeechListener
 	 */
-	public void voiceFinished(String voiceResult){
+	public void voiceFinished(String voiceResult, ArrayList<float[]> motionResult){
 		Log.d("MAIN: ", voiceResult);
+		Log.d("MAIN: ", Arrays.deepToString(motionResult.toArray()));
 	}
 	
 	
@@ -78,27 +84,15 @@ public class MainActivity extends Activity {
 	public void startRecordingMagic() {
 		Log.d("Pressed", "Start Recording Magic!");
 		startRecordingVoice();
-		startRecordingMotion();
 	}
 
 	/**
 	 * Starts recording voice.
 	 */
 	public void startRecordingVoice() {
-		listener = new SpeechListener(this.getApplicationContext(), this); 
+		listener = new SpeechListener(this.getApplicationContext(), this);
+		mSensorManager.registerListener(listener, mAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 		listener.startRecordingVoice();
-	}
-
-	public void startRecordingMotion() {
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-		
-	}
-	
-	public void onSensorChanged(SensorEvent event){
-		Log.d("x-acceleration: ", Float.toString(event.values[0]));
-		Log.d("y-acceleration: ", Float.toString(event.values[1]));
-		
 	}
 	
 	/**
@@ -109,7 +103,8 @@ public class MainActivity extends Activity {
 	 */
 	public void stopRecordingMagic() {
 		Log.d("Released", "Stop Recording Magic!");
-		
+		//stop listening for motion
+		mSensorManager.unregisterListener(listener);
 		// stop listening to voice commands
 		listener.stopRecordingVoice();
 	}
@@ -119,8 +114,8 @@ public class MainActivity extends Activity {
 	 * onClick handler for the Grimoire button
 	 */
 	public void gotoGrimoire(View view){
-		Intent myIntent = new Intent(MainActivity.this, GrimoireActivity.class);
-		MainActivity.this.startActivity(myIntent);
+		Intent myIntent = new Intent(this, GrimoireActivity.class);
+		startActivity(myIntent);
 	}
 
 }

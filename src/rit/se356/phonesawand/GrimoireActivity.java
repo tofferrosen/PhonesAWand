@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.ViewGroup;
@@ -27,21 +28,19 @@ public class GrimoireActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_grimoire);
+		persistance = new PersistService(this.getBaseContext());	
 		
 		final ListView listview = (ListView) findViewById(R.id.listview);
-		String[] spells = new String[] {"Fireball", "Frostbolt", "Fartball"};
 		
 		final ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < spells.length; ++i){
-			list.add(spells[i]);
+		for (Spell s : persistance.getSpells()) {
+				list.add(s.spellName);
 		}
 		
 		final StableArrayAdapter adapter = new StableArrayAdapter(this, 
 												android.R.layout.simple_list_item_1, list);
 		listview.setAdapter(adapter);
-		
-		/*persistance = new PersistService(this.getBaseContext());
-		
+		/*		
 		// Create a progress bar to display while lists loads
 		ProgressBar progressBar = new ProgressBar(this);
 		progressBar.setLayoutParams(new LayoutParams(
@@ -51,7 +50,8 @@ public class GrimoireActivity extends Activity {
         
         // Must add the progress bar to the root of the layout
         ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        root.addView(progressBar); */
+        root.addView(progressBar);
+        */
         
         // TODO
 		
@@ -61,7 +61,7 @@ public class GrimoireActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		// getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 	
