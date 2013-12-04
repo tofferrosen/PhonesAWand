@@ -48,7 +48,7 @@ public class SpeechListener implements RecognitionListener, SensorEventListener{
 		timer = new Timer();
 		motionTask = new MotionRecordTask();
 		//schedule motion task to record motion every 100 milliseconds
-		timer.schedule(motionTask,0, 100);
+		timer.schedule(motionTask,0, 200);
 		
 		speech = SpeechRecognizer.createSpeechRecognizer(context);
 		speech.setRecognitionListener(this);

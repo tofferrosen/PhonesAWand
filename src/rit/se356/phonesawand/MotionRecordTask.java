@@ -17,8 +17,11 @@ public class MotionRecordTask extends TimerTask{
 	
 	@Override
 	public void run() {
-		xyzValues.add(xyz);
-		Log.d("xyz: ", Arrays.toString(xyz));
+		float[] a = new float[3];
+		a[0] =xyz[0];
+		a[1] =xyz[1];
+		a[2] =xyz[2];
+		xyzValues.add(a);
 	}
 
 	public void setXYZ(float[] xyz) {
