@@ -39,23 +39,15 @@ public class MainActivity extends Activity {
 		
 		// Create default spell
 		Log.d("Notification", "App Directory: " + getBaseContext().getFilesDir().getPath());
-<<<<<<< HEAD
-		Spell defaultSpell = new Spell();
-		defaultSpell.spellName = "Default";
-		defaultSpell.voice = "fireball";
-		persistance = new PersistService(getBaseContext());
-		persistance.saveSpell(defaultSpell);
-		Log.d("Notification", "# of spells: " + persistance.getSpells().size());
-=======
+
 		//Spell defaultSpell = new Spell();
 		ArrayList<float[]> motion = new ArrayList<float[]>();
 		Spell defaultSpell = new Spell("Default", "fireball", motion, 100, 10, 0, "burn", "Fire", "Evocation");
 		//defaultSpell.spellName = "Default";
 		//defaultSpell.voice = "fireball";
-		PersistService pervService = new PersistService(getBaseContext());
-		pervService.saveSpell(defaultSpell);
-		Log.d("Notification", "# of spells: " + pervService.getSpells().size());
->>>>>>> 5ec778fb2f70d94834ffa53d6b3cbb7138065ae9
+		persistance = new PersistService(getBaseContext());
+		persistance.saveSpell(defaultSpell);
+		Log.d("Notification", "# of spells: " + persistance.getSpells().size());
 		
 		final Button doMagic = (Button) findViewById(R.id.perform_magic);
 		doMagic.setOnTouchListener(new View.OnTouchListener() {
