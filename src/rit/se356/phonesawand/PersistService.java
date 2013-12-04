@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 public class PersistService {
 
@@ -57,7 +58,11 @@ public class PersistService {
 				input += toSave.school;
 			
 				try {
-					fos = appContext.openFileOutput("spells\\" + toSave.spellName, Context.MODE_PRIVATE);
+					File spellDir = appContext.getDir("spells", Context.MODE_PRIVATE);
+					Log.d("Debug", "Save Spell folder: " + spellDir.getPath());
+					File spellFile = new File(spellDir, toSave.spellName);
+					fos = new FileOutputStream(spellFile);
+					Log.d("Notification", "File created: " + toSave.spellName);
 					fos.write(input.getBytes());
 					fos.close();
 				} catch (Exception e) {
@@ -72,18 +77,22 @@ public class PersistService {
 		 * @param spellname - The name of the spell
 		 * @return The spell
 		 */
-		Spell loadSpell(String spellname) {
+		Spell loadSpell(String spellName) {
 			int ch;
 			StringBuffer fileContent = new StringBuffer("");
 			FileInputStream fis;
 			try {
-			    fis = appContext.openFileInput( "spells\\" + spellname );
+				File spellDir = appContext.getDir("spells", Context.MODE_PRIVATE);
+				Log.d("Debug", "Load Spell folder: " + spellDir.getPath());
+				File spellFile = new File(spellDir, spellName);
+				fis = new FileInputStream(spellFile);
 			    try {
 			        while( (ch = fis.read()) != -1)
 			            fileContent.append((char)ch);
 			    } catch (Exception e) {
 			        e.printStackTrace();
 			    }
+			    fis.close();
 			} catch (Exception e) {
 			    e.printStackTrace();
 			}
@@ -110,7 +119,7 @@ public class PersistService {
 				motionList.add(floatArray);
 			}
 			
-			Spell internalSpell = new Spell(spellname, params[0], motionList,
+			Spell internalSpell = new Spell(spellName, params[0], motionList,
 					Integer.parseInt(params[2]), Integer.parseInt(params[3]), 
 					Integer.parseInt(params[4]), params[5], params[6], params[7]);
 			//internalSpell.motion = motionMatrix;
@@ -125,7 +134,8 @@ public class PersistService {
 		 * @return The list of spells
 		 */
 		List<Spell> getSpells() {
-			File spellsDir = new File(appContext.getFilesDir().getPath() + "spells\\");
+			File spellsDir = appContext.getDir("spells", Context.MODE_PRIVATE);
+			Log.d("Debug", "Get Spell folder: " + spellsDir.getPath());
 			List<Spell> spellList = new ArrayList<Spell>();
 			
 			for (File f : spellsDir.listFiles()) {
